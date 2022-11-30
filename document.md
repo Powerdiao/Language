@@ -1,20 +1,18 @@
 ##  1 新定义语言的背景和目标
 ##  2 词法和语法设计
-### 基本数据类型
+### 2.1 基本数据类型
 下面是数值类型的EBNF
 ```javascript
 valueType ::= <INT> | <FLOAT> | <STRING> 
 INT ::= [+|-] <digit>
 FLOAT ::= <digit>+ '.' <digit>+
-STRING ::= [^\r\n]*
-        | [\s\n\r]
+STRING ::= [<letter>| <digit>] *
 digit ::= [0-9]
-letter ::= [a-z] 
-        | [A-Z]
+letter ::= [a-z] | [A-Z]
 
 ```
 
-### 变量
+### 2.2 变量
 >变量是存储在内存中的值，这就意味着在创建变量时会在内存中开辟一个空间。 基于变量的数据类型，解释器会分配指定内存，并决定什么数据可以被存储在内存中。
 变量可以指定不同的数据类型，这些变量可以存储整数，小数或字符串。
 
@@ -26,9 +24,9 @@ letter ::= [a-z]
         | [A-Z]
 identifier ::= [<letter>| '_'] [<letter> | <digit> | '_' ]*
 ```
-项目     | Value
-### 运算符
-#### 算数运算符
+
+### 2.3 运算符
+#### 2.3.1 算数运算符
 以下假设变量a为10，变量b为20：
 
 
@@ -40,39 +38,41 @@ identifier ::= [<letter>| '_'] [<letter> | <digit> | '_' ]*
 | /    | 除 - x除以y            | b / a 输出结果 2                                               |
 | ^    | 幂 - 返回x的y次幂         | a^b 为10的20次方， 输出结果10000000000000000000                     |
 
-#### 比较运算符
+#### 2.3.2 比较运算符
 以下假设变量a为10，变量b为20：
 
-| 运算符 | 	描述 	                                                          | 实例                             |
-|-----|----------------------------------------------------------------|--------------------------------|
-| ==  | 	等于 - 比较对象是否相等	                                                | (a == b) 返回 False。             |
-| !=	 | 不等于 - 比较两个对象是否不相等                                              | 	(a != b) 返回 True。             |
-| \>	 | 大于 - 返回x是否大于y                                                  | (a > b) 返回 False。              |
-| <	  | 小于 - 返回x是否小于y。所有比较运算符返回1表示真，返回0表示假。这分别与特殊的变量 True 和 False 等价。	 | (a < b) 返回 True。               |
-| >=	 | 大于等于 - 返回x是否大于等于y。	                                            | (a >= b) 返回 False。             |
-| <=	 | 小于等于 - 返回x是否小于等于y。	                                            | (a <= b) 返回 True。              |
+| 运算符  | 	描述 	                                                          | 实例                             |
+|------|----------------------------------------------------------------|--------------------------------|
+| ==   | 	等于 - 比较对象是否相等	                                                | (a == b) 返回 False。             |
+| !=	  | 不等于 - 比较两个对象是否不相等                                              | 	(a != b) 返回 True。             |
+| \>	  | 大于 - 返回x是否大于y                                                  | (a > b) 返回 False。              |
+| <	   | 小于 - 返回x是否小于y。所有比较运算符返回1表示真，返回0表示假。这分别与特殊的变量 True 和 False 等价。	 | (a < b) 返回 True。               |
+| \>=	 | 大于等于 - 返回x是否大于等于y。	                                            | (a >= b) 返回 False。             |
+| <=	  | 小于等于 - 返回x是否小于等于y。	                                            | (a <= b) 返回 True。              |
 
-#### 赋值运算符
+#### 2.3.3 赋值运算符
 以下假设变量a为10，变量b为20：
 
 | 运算符符 | 描述       | 实例                           |
 |------|----------|------------------------------|
 | =    | 简单的赋值运算符 | c = a + b 将 a + b 的运算结果赋值为 c |
 
-#### 逻辑运算符
+#### 2.3.4 逻辑运算符
+以下假设变量a为10，变量b为20：
+
 | 运算符	 | 逻辑表达式	  | 描述                                                    | 	实例                                                         |
 |------|---------|-------------------------------------------------------|-------------------------------------------------------------|
 | and  | x and y | 	布尔"与" - 如果 x 为 False，x and y 返回 False，否则它返回 y 的计算值。	 | (a and b) 返回 20。                                            |
 | or	  | x or y	 | 布尔"或" - 如果 x 是非 0，它返回 x 的计算值，否则它返回 y 的计算值。            | 	(a or b)                                           返回 10。  |                                                   
 | not	 | not x	  | 布尔"非" - 如果 x 为 True，返回 False 。如果 x 为 False，它返回 True。	 | not(a and b)                                       返回 False |                                                    
 
-#### 运算符的优先级
+#### 2.3.5 运算符的优先级
 以下表格列出了从最高到最低优先级的所有运算符：
 
 | 运算符         | 	描述        |
 |-------------|------------|
-| **	         | 指数 (最高优先级) |
-| * / % //	   | 乘，除，取模和取整除 |
+| ^	          | 指数 (最高优先级) |
+| * / %       | 乘，除，取模     |
 | + -         | 	加法减法      |
 | <= < > >=	  | 比较运算符      |
 | == !=	      | 等于运算符      |
@@ -80,24 +80,160 @@ identifier ::= [<letter>| '_'] [<letter> | <digit> | '_' ]*
 | not and or	 | 逻辑运算符      |
 
 
-### 关键词
-关键词 含义 关键词 含义
-|------|---------|-------------------------------------------------------|-------------------------------------------------------------|
+### 2.4 关键词
+关键词是cherry预先保留的标识符,一共17个关键词，包括基本关键词、控制分支关键词。   
+在定义变量或者常量时候，不能使用关键字，下表给出cherry所有token以及每个关键词所代表的含义
 
-VAR 定义变量
-FUN 定义函数
+| 关键词  | 含义    | 关键词      | 含义    |
+|------|-------|----------|-------|
+| VAR  | 定义变量  | WHILE    | 循环关键词 | 
+| FUN  | 定义函数  | FOR      | 循环关键词 |
+| AND  | 与运算   | TO       | 循环关键词 |
+| OR   | 或运算   | STEP     | 循环关键词 |
+| NOT  | 非运算   | RETURN   | 函数返回  |
+| IF   | 条件关键词 | CONTINUE | 继续循环  |
+| ELSE | 条件关键词 | BREAK    | 退出循环  |
+| ELIF | 条件关键词 | END      | 结束循环  |
+| THEN | 条件关键词 |
 
-uint8 8位无符号整型 uint16 16位无符号整型
-int 整型 float 单精度浮点数
-double 双精度浮点数 string 字符串类型
-if 条件关键词 else 条件关键词
-while 循环关键词 for 循环关键词
-match 枚举匹配 break 跳出循环
-continue 继续循环 return 函数返回
-input 输入函数 output 输出函数
-readfile 读取文件 writefile 写入文件
-debug 调试函数 size 字节函数
-Bool 强制转换bool类型 Char 强制转换char类型
-Int 强制转换int类型 String 强制转换string类型
-Float 强制转换float类型 Double 强制转换double类型
+### 2.5 常用内置函数
+#### INPUT() 终端输入
+```commandline
+VAR a = INPUT()
+# 将键盘中输入的字符串/浮点数赋给变量a
+```
+#### INPUT_INT() 终端输入整数
+```commandline
+VAR a = INPUT_INT()
+# 将键盘中输入的整数赋给变量a。若输入非整数则报错，用户需要重新键入。
+```
+#### PRINT() 终端输出
+```commandline
+VAR a = 10
+PRINT(a)
+# 输出变量a
+```
+#### CLEAR() 终端清屏
+```commandline
+CLEAR()
+# 清理终端屏幕
+```
+#### IS_NUM() 判断是否为number
+```commandline
+VAR a = 10
+IS_NUM(a)
+# 若为number，则返回1，否则返回0.
+```
+#### IS_STR() 判断是否为string
+```commandline
+VAR a = "asbj"
+IS_STR(a)
+# 若为string，则返回1，否则返回0.
+```
+
+#### IS_LIST() 判断是否为list
+```commandline
+VAR a = [a,b,c]
+IS_LIST(a)
+# 若为list，则返回1，否则返回0.
+```
+
+#### IS_FUN() 判断是否为function
+```commandline
+FUN function(b, c) -> b + c
+IS_FUN(function)
+# 若为function，则返回1，否则返回0.
+```
+#### APPEND(LIST list, item) LIST添加元素
+```commandline
+VAR list = [1,2,3]
+APPEND(list,4)
+# list = [1,2,3,4]
+```
+
+#### POP(LIST a, index) LIST POP元素
+```commandline
+VAR list = [1,2,3,4]
+POP(list,3)
+# 弹出list的第三个元素，即4
+```
+#### EXTEND(LIST a, LIST b)  拼接两个LIST
+```commandline
+VAR list = [1,2,3,4]
+EXTEND(list,[5,6,7])
+# 弹出list的第三个元素，即4
+```
+
+### 2.6 词法设计
+
+### 2.7 语法设计
+```commandline
+statements  : NEWLINE* statement (NEWLINE+ statement)* NEWLINE*
+
+statement		: KEYWORD:RETURN expr?
+						: KEYWORD:CONTINUE
+						: KEYWORD:BREAK
+						: expr
+
+expr        : KEYWORD:VAR IDENTIFIER EQ expr
+            : comp-expr ((KEYWORD:AND|KEYWORD:OR) comp-expr)*
+
+comp-expr   : NOT comp-expr
+            : arith-expr ((EE|LT|GT|LTE|GTE) arith-expr)*
+
+arith-expr  :	term ((PLUS|MINUS) term)*
+
+term        : factor ((MUL|DIV) factor)*
+
+factor      : (PLUS|MINUS) factor
+            : power
+
+power       : call (POW factor)*
+
+call        : atom (LPAREN (expr (COMMA expr)*)? RPAREN)?
+
+atom        : INT|FLOAT|STRING|IDENTIFIER
+            : LPAREN expr RPAREN
+            : list-expr
+            : if-expr
+            : for-expr
+            : while-expr
+            : func-def
+
+list-expr   : LSQUARE (expr (COMMA expr)*)? RSQUARE
+
+if-expr     : KEYWORD:IF expr KEYWORD:THEN
+              (statement if-expr-b|if-expr-c?)
+            | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
+
+if-expr-b   : KEYWORD:ELIF expr KEYWORD:THEN
+              (statement if-expr-b|if-expr-c?)
+            | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
+
+if-expr-c   : KEYWORD:ELSE
+              statement
+            | (NEWLINE statements KEYWORD:END)
+
+for-expr    : KEYWORD:FOR IDENTIFIER EQ expr KEYWORD:TO expr 
+              (KEYWORD:STEP expr)? KEYWORD:THEN
+              statement
+            | (NEWLINE statements KEYWORD:END)
+
+while-expr  : KEYWORD:WHILE expr KEYWORD:THEN
+              statement
+            | (NEWLINE statements KEYWORD:END)
+
+func-def    : KEYWORD:FUN IDENTIFIER?
+              LPAREN (IDENTIFIER (COMMA IDENTIFIER)*)? RPAREN
+              (ARROW expr)
+            | (NEWLINE statements KEYWORD:END)
+
+```
+
+### 2.8 抽象语法树
+
 ##  3 范型的设计
+
+
+
+
