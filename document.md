@@ -240,6 +240,43 @@ AST树每一层结构也被叫做节点(Node)。
 
 
 ##  3 范型的设计
+### 3.1 分支语句
+cherry条件语句是通过一条或多条语句的执行结果（True或者False）来决定执行的代码块。   
+EBNF
+```
+if-expr     : KEYWORD:IF expr KEYWORD:THEN
+              (statement if-expr-b|if-expr-c?)
+            | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
+
+if-expr-b   : KEYWORD:ELIF expr KEYWORD:THEN
+              (statement if-expr-b|if-expr-c?)
+            | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
+
+if-expr-c   : KEYWORD:ELSE
+              statement
+            | (NEWLINE statements KEYWORD:END)
+
+```
+多分支语句：
+```
+IF expr THEN statement
+ELIF expr1 THEN statement1
+ELSE statement2 
+```
+由于 cherry 并不支持 switch 语句，所以多个条件判断，只能用 elif 来实现，如果判断需要多个条件需同时判断时，可以使用 or （或），表示两个条件有一个成立时判断条件成功；
+使用 and （与）时，表示只有两个条件同时成立的情况下，判断条件才成功。
+
+### 3.2 循环语句
+程序在一般情况下是按顺序执行的。cherry编程语言提供了各种控制结构，允许更复杂的执行路径。循环语句允许我们执行一个语句或语句组多次
+#### 3.2.1 for语句
+
+
+```
+FOR VAR i = start_value TO end_value THEN expr
+```
+
+#### 3.2.2 while语句
+
 
 
 
