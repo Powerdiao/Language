@@ -242,42 +242,74 @@ AST树每一层结构也被叫做节点(Node)。
 ##  3 范型的设计
 ### 3.1 分支语句
 cherry条件语句是通过一条或多条语句的执行结果（True或者False）来决定执行的代码块。   
-EBNF
+IF的EBNF
 ```
-if-expr     : KEYWORD:IF expr KEYWORD:THEN
-              (statement if-expr-b|if-expr-c?)
-            | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
+if-expr ::= 'IF' <expr> 'THEN'(<statement>[<if-expr-b>|<if-expr-c>])
+         | (<NEWLINE> <statements> 'END'|<if-expr-b>|<if-expr-c>)
 
-if-expr-b   : KEYWORD:ELIF expr KEYWORD:THEN
-              (statement if-expr-b|if-expr-c?)
-            | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
+if-expr-b ::= 'ELIF' <expr> 'THEN'(<statement>[<if-expr-b>|<if-expr-c>])
+           | (<NEWLINE> <statements> 'END'|<if-expr-b>|<if-expr-c>)
 
-if-expr-c   : KEYWORD:ELSE
-              statement
-            | (NEWLINE statements KEYWORD:END)
+if-expr-c ::= 'ELSE'
+          | <statement>
+          | (<NEWLINE> <statements> 'END')
 
 ```
-多分支语句：
+IF的DFA
+![img.png](IF_DFA.png)
+IF的格式
 ```
 IF expr THEN statement
 ELIF expr1 THEN statement1
-ELSE statement2 
+ELSE statement2 END
 ```
-由于 cherry 并不支持 switch 语句，所以多个条件判断，只能用 elif 来实现，如果判断需要多个条件需同时判断时，可以使用 or （或），表示两个条件有一个成立时判断条件成功；
+由于 cherry 并不支持 switch 语句，所以多个条件判断，可以通过 elif 来实现，如果判断需要多个条件需同时判断时，可以使用 or （或），表示两个条件有一个成立时判断条件成功；
 使用 and （与）时，表示只有两个条件同时成立的情况下，判断条件才成功。
 
 ### 3.2 循环语句
-程序在一般情况下是按顺序执行的。cherry编程语言提供了各种控制结构，允许更复杂的执行路径。循环语句允许我们执行一个语句或语句组多次
-#### 3.2.1 for语句
+程序在一般情况下是按顺序执行的。cherry编程语言提供了几种控制结构，允许更复杂的执行路径。循环语句允许我们执行一个语句或语句组多次
+#### 3.2.1 FOR语句
+每个for语句都包含两个部分：循环头和循环体。循环头控制循环体的执行次数，它由三个部分组成：一
+个循环遍历初始化语句，一个循环范围，以及一个循环变量的增长步长。
 
-
+for的EBNF
+```javascript
+for-expr ::= 'FOR' <identifier> '=' <expr> 'TO' <expr> ['STEP' <expr>] 'THEN'
+         <statement> | (<NEWLINE> <statements> 'END')
 ```
-FOR VAR i = start_value TO end_value THEN expr
+for的DFA
+![img.png](FOR_DFA.png)
+
+
+for的格式
+
+```javascript
+FOR VAR i = start_value TO end_value STEP step_value THEN expr
 ```
 
-#### 3.2.2 while语句
+#### 3.2.2 WHILE语句
+while 语句用于循环执行程序，即在某条件下，循环执行某段程序，以处理需要重复处理的相同任务
+执行语句可以是单个语句或语句块。判断条件可以是任何表达式，任何非零、或非空（null）的值均为true。
+当判断条件假 false 时，循环结束。   
+WHILE的EBNF
+```javascript
+while-expr ::= 'WHILE' <expr> 'THEN' <statement>
+           | (<NEWLINE> <statements> 'END')
+```
+WHILE的DFA
+![img_2.png](WHILE_DFA.png)
+WHILE语句的形式
+```
+WHILE expr THEN
+statement
+END
+```
 
+#### 3.3 跳转语句
+break语句：负责中止离他最近的while，for语句；   
+continue 语句：负责中止离他最近的当前迭代并立即开始下一次迭代，语句只能出现在while，for语句
+的内部，或者嵌套在此类循环里的语句或块的内部
 
-
+## 4 典型语言机制的语义相关的证明
 
 
