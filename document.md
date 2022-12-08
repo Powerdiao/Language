@@ -1,4 +1,5 @@
 ##  1 新定义语言的背景和目标
+
 ##  2 词法和语法设计
 ### 2.1 基本数据类型
 下面是数值类型的EBNF
@@ -164,6 +165,20 @@ EXTEND(list,[5,6,7])
 # 弹出list的第三个元素，即4
 ```
 
+#### RUN("file") 
+```
+RUN("file")
+#读入并运行文件file
+```
+
+#### LEN(elements) 
+```
+LEN(elements)
+#返回list的长度
+```
+
+
+
 ### 2.6 词法设计
 
 ### 2.7 语法设计
@@ -313,3 +328,103 @@ continue 语句：负责中止离他最近的当前迭代并立即开始下一�
 ## 4 典型语言机制的语义相关的证明
 
 
+## 5 与对标语言的差异
+
+- 在cherry中，取消了GOTO语句。 GOTO语句可以灵活跳转会导致破坏结构化设计风格，若一段代码多次使用goto语句会降低代码的可读性。其次，GOTO语句的执行可能会跳过变量的初始化、重要的计算语句等，甚至影响到整个程序的运行。
+- 在Basic上拓展了IF-THEN语句，cherry还可支持IF-THEN-ELSE，IF-THEN-ELIF-THEN-ELSE。通过条件控制语句还能进一步实现witch功能。
+- 在Basic中变量命名只能两个字符，cherry的变量命名长度不受限制
+- Basic的循环语句只有FOR，cherry还增加了WIILE循环语句
+## 6 实现与测试
+### 6.1 测试代码
+#### I/O操作
+```
+VAR a = INPUT()
+PRINT(a)
+VAR b = INPUT_INT()
+PRINT(b)
+```
+测试结果
+![img_1.png](test_IO.png)
+
+#### 算术运算
+```
+VAR a = 4
+VAR b = 2
+PRINT(a + b)
+PRINT(a - b)
+PRINT(a * b)
+PRINT(a / b)
+PRINT(a ^ b)
+```
+测试结果
+![img.png](test_ALG.png)
+
+#### 逻辑运算
+```
+VAR a = 1
+VAR b = 0
+PRINT(a AND b)
+PRINT(a OR b)
+PRINT(NOT b)
+```
+测试结果
+![img.png](test_LOGIC.png)
+
+#### 函数
+```
+# This is a very useful piece of software
+
+FUN oopify(prefix) -> prefix + "oop"
+
+FUN join(elements, separator)
+	VAR result = ""
+	VAR len = LEN(elements)
+
+	FOR i = 0 TO len THEN
+		VAR result = result + elements/i
+		IF i != len - 1 THEN VAR result = result + separator
+	END
+
+	RETURN result
+END
+
+FUN map(elements, func)
+	VAR new_elements = []
+
+	FOR i = 0 TO LEN(elements) THEN
+		APPEND(new_elements, func(elements/i))
+	END
+
+	RETURN new_elements
+END
+
+PRINT("Greetings universe!")
+
+FOR i = 0 TO 5 THEN
+	PRINT(join(map(["l", "sp"], oopify), ", "))
+END
+
+```
+测试结果
+![img.png](test_FUN.png)
+
+### 6.2 错误示范
+在cherry中，提供精准的错误定位和错误类型分析，方便编程人员及时发现自己的错误。   
+  
+#### 关键词错误
+```
+VAR 12AB
+```
+ ![img_1.png](error_KEY.png)
+
+#### 缺少符号
+```
+VAR a = 1 + 
+```
+![img.png](error_MISS.png)
+
+#### 变量未定义
+```
+A = 1
+```
+![img.png](error_UNDEFINE.png)
