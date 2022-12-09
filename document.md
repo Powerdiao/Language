@@ -290,7 +290,7 @@ if-expr-c ::= 'ELSE'
 
 ```
 IF的DFA
-![img.png](IF_DFA.png)
+![img_1.png](DFA_IF.png)
 IF的格式
 ```
 IF expr THEN statement
@@ -306,14 +306,13 @@ ELSE statement2 END
 每个for语句都包含两个部分：循环头和循环体。循环头控制循环体的执行次数，它由三个部分组成：一
 个循环遍历初始化语句，一个循环范围，以及一个循环变量的增长步长。
 
-for的EBNF
+FOR的EBNF
 ```javascript
 for-expr ::= 'FOR' <identifier> '=' <expr> 'TO' <expr> ['STEP' <expr>] 'THEN'
          <statement> | (<NEWLINE> <statements> 'END')
 ```
-for的DFA
-![img.png](FOR_DFA.png)
-
+FOR的DFA
+![img_1.png](DFA_FOR.png)
 
 for的格式
 
@@ -331,7 +330,7 @@ while-expr ::= 'WHILE' <expr> 'THEN' <statement>
            | (<NEWLINE> <statements> 'END')
 ```
 WHILE的DFA
-![img_2.png](WHILE_DFA.png)
+![img_2.png](DFA_WHILE.png)
 WHILE语句的形式
 ```
 WHILE expr THEN
@@ -348,7 +347,7 @@ continue 语句：负责中止离他最近的当前迭代并立即开始下一�
 
 
 ## 5 与对标语言的差异
-
+与basic相比，cherry语言有如下特点
 - 在cherry中，取消了GOTO语句。 GOTO语句可以灵活跳转会导致破坏结构化设计风格，若一段代码多次使用goto语句会降低代码的可读性。其次，GOTO语句的执行可能会跳过变量的初始化、重要的计算语句等，甚至影响到整个程序的运行。
 - 在Basic上拓展了IF-THEN语句，cherry还可支持IF-THEN-ELSE，IF-THEN-ELIF-THEN-ELSE。通过条件控制语句还能进一步实现witch功能。
 - 在Basic中变量命名只能两个字符，cherry的变量命名长度不受限制
@@ -362,7 +361,8 @@ PRINT(a)
 VAR b = INPUT_INT()
 PRINT(b)
 ```
-测试结果
+测试结果  
+
 ![img_1.png](test_IO.png)
 
 #### 算术运算
@@ -375,7 +375,8 @@ PRINT(a * b)
 PRINT(a / b)
 PRINT(a ^ b)
 ```
-测试结果
+测试结果  
+
 ![img.png](test_ALG.png)
 
 #### 逻辑运算
@@ -386,7 +387,8 @@ PRINT(a AND b)
 PRINT(a OR b)
 PRINT(NOT b)
 ```
-测试结果
+测试结果  
+
 ![img.png](test_LOGIC.png)
 
 #### 函数
@@ -424,7 +426,8 @@ FOR i = 0 TO 5 THEN
 END
 
 ```
-测试结果
+测试结果  
+
 ![img.png](test_FUN.png)
 
 ### 6.2 错误示范
